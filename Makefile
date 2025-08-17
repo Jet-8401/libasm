@@ -7,6 +7,7 @@ SRC =	ft_strlen.s \
 		ft_strdup.s \
 		ft_list_size.s \
 		ft_list_push_front.s \
+		ft_atoi_base.s \
 		includes/ft_set_errno.s
 OBJ = $(SRC:.s=.o)
 
