@@ -1,0 +1,7 @@
+*.o
+main
+*.c
+*.sh
+*.a
+asm-lsp
+.asm-lsp.toml
