@@ -21,8 +21,7 @@ ft_atoi_base:
     pop rdi
 
     cmp rax, 2      ; Check the length of base
-    jl .error
-    jmp .convert
+    jnl .convert
 
 .error:
     mov rax, 0
