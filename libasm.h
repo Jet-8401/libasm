@@ -21,6 +21,11 @@ typedef struct s_list {
 
 int ft_list_size(t_list *begin);
 void ft_list_push_front(t_list **begin_list, void *data);
-void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
+void ft_list_remove_if(
+	t_list **begin_list,
+	void *data_ref,
+	int (*cmp)(void *data, void *data_ref),
+	void (*free_fct)(void *)
+);
 
 #endif
