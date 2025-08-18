@@ -4,4 +4,3 @@ main
 *.sh
 *.a
 asm-lsp
-.asm-lsp.toml
