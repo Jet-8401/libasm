@@ -5,11 +5,16 @@ SRC =	ft_strlen.s \
 		ft_strcpy.s \
 		ft_strcmp.s \
 		ft_strdup.s \
-		ft_list_size.s \
-		ft_list_push_front.s \
-		ft_list_remove_if.s \
 		includes/ft_set_errno.s
+
 OBJ = $(SRC:.s=.o)
+
+BONUS_SRC = ft_list_size_bonus.s \
+		    ft_list_push_front_bonus.s \
+		    ft_list_remove_if_bonus.s \
+			ft_atoi_base_bonus.s
+
+BONUS_OBJ = $(BONUS_SRC:.s=.o)
 
 CC = gcc
 AS = nasm
@@ -19,6 +24,9 @@ ASFLAGS = -f elf64 -I includes/
 
 all: $(NAME)
 
+bonus: $(OBJ) $(BONUS_OBJ)
+	ar rcs $(NAME) $^
+
 $(NAME): $(OBJ)
 	ar rcs $@ $^
 
@@ -26,7 +34,7 @@ $(NAME): $(OBJ)
 	$(AS) $(ASFLAGS) $< -o $@
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(BONUS_OBJ)
 
 fclean: clean
 	rm -f $(NAME)
