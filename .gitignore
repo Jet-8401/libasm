@@ -1,5 +1,4 @@
 *.o
-*.sh
 *.a
 test_mandatory
 test_bonus
