@@ -1,5 +1,6 @@
 *.o
-main
 *.sh
 *.a
+test_mandatory
+test_bonus
 asm-lsp
