@@ -1,6 +1,5 @@
 *.o
 main
-*.c
 *.sh
 *.a
 asm-lsp

@@ -3,7 +3,7 @@
 
 # include "libasm.h"
 
-int ft_atoi_base(char *str, char *base);
+int ft_atoi_base(const char *str, const char *base);
 
 typedef struct s_list {
 	void *data;
