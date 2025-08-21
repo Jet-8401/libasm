@@ -1,9 +1,13 @@
 section .bss
-    table resb 256    ; lookup table for 256 ASCII characters
+    ; lookup table for 256 ASCII characters
+    ; each character have its value setup by its position inside
+    ; the base string, else the default value if `UNSET_VALUE`
+    table resb 256
+
+UNSET_VALUE equ 255
 
 section .text
     global ft_atoi_base
-    extern strchr
 
 ; check if reg dl is a space character
 ; return 1 or 0 inside rax
@@ -49,9 +53,8 @@ ft_atoi_base:
     ; reset the entire look-up table
     lea r11, [rel table]
     mov rcx, 256
-    xor rax, rax
 .clear_table:
-    mov byte [r11 + rcx - 1], al
+    mov byte [r11 + rcx - 1], UNSET_VALUE
     loop .clear_table
 
 ; check every chars
@@ -71,11 +74,15 @@ ft_atoi_base:
     jnz .done
 
     ; check duplicates
-    movzx rax, dl          ; zero-extend dl to rax (character as index)
-    lea r11, [rel table]   ; load table address
-    cmp byte [r11 + rax], 0  ; check if character already seen
-    jne .done              ; if not zero, it's a duplicate
-    mov byte [r11 + rax], 1  ; mark character as seen
+    ; r11 should already be setup to table address
+    ; lea r11, [rel table]   ; load table address
+    movzx rax, dl               ; zero-extend dl to rax (character as index)
+    lea r8, [r11 + rax]
+    cmp byte [r8], UNSET_VALUE  ; check if character already seen
+    jne .done                   ; if not zero, it's a duplicate
+    mov rdx, rsi
+    sub rdx, r13
+    mov byte [r8], dl           ; mark character as seen and set its value to its index
 
     ; move to next char
     inc rsi
@@ -93,7 +100,8 @@ ft_atoi_base:
 ; then convert value
 ; stop at the first value not found inside the base
 .convert:
-    mov r15, rsi   ; store size of base inside r15
+    xor r12, r12    ; restore register
+    mov r15, rsi    ; store size of base inside r15
 
 .skip_whitespaces:
     mov dl, byte [r14]
@@ -122,15 +130,13 @@ ft_atoi_base:
     jz .done
 
     ; search the value of the char inside the base from its index
-    mov rdi, r13
-    movzx rsi, byte [r14]
-    call strchr wrt ..plt
-    test rax, rax
-    jz .done        ; if char not found go to done
-    sub rax, r13    ; get the value based on index
+    movzx rax, dl
+    movzx rdi, byte [r11 + rax]     ; value of char
+    cmp rdi, UNSET_VALUE            ; if char has no value
+    je .done
 
     imul r12, r15   ; multiply the result by base length
-    add r12, rax    ; add the value
+    add r12, rdi    ; add the value
 
     inc r14
     jmp .convert_loop
